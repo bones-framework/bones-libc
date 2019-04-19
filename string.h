@@ -5,22 +5,21 @@
 
 #if defined(__GNUC__)
 
-// #define LIBC_BUILTIN_WRAPPER(func, ret_type, ...) \
-//     ret_type func(__VA_ARGS__) __attribute__((weak, alias("__builtin_" #func)))
+    static inline void* memset(void* ptr, int value, size_t size) {
+        return __builtin_memset(ptr, value, size);
+    }
 
-//     LIBC_BUILTIN_WRAPPER(memset, void*, void* ptr, int value, size_t size);
-//     LIBC_BUILTIN_WRAPPER(memmove, void*, void* dst, const void* src, size_t size);
-//     LIBC_BUILTIN_WRAPPER(memcpy, void*, void* dst, const void* src, size_t size);
+    static inline void* memmove(void* dst, const char* src, size_t size) {
+        return __builtin_memmove(dst, src, size);
+    }
 
-//     LIBC_BUILTIN_WRAPPER(strlen, size_t, const char* str);
+    static inline void* memcpy(void* dst, const char* src, size_t size) {
+        return __builtin_memcpy(dst, src, size);
+    }
 
-// #undef LIBC_BUILTIN_WRAPPER
-
-    #define memset __builtin_memset
-    #define memmove __builtin_memmove
-    #define memcpy __builtin_memcpy
-
-    #define strlen __builtin_strlen
+    static inline size_t strlen(const char* str) {
+        return __builtin_strlen(str);
+    }
     
 #else
     #error string.h depends on gcc
